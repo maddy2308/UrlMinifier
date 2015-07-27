@@ -12,12 +12,18 @@
     return service;
 
     function getAllMinifiedUrls () {
+      //return [{
+      //  OriginalUrl: 'www.google.com',
+      //  MinifiedUrl: 'gogl',
+      //  CreatedBy: "Madhur Mehta",
+      //  CreatedOn: new Date()
+      //}];
       return $http.get("http://localhost:3000").then(
           function(response){
             return response.data;
           },
           function (err){
-             return err;
+             return err.data;
           }
       );
     }

@@ -7,10 +7,10 @@ var app = express();
 
 mongoose.connect('mongodb://localhost/SquareTrade');
 
-var app = express();
-app.use(bodyParser);
-app.use(cors);
+app.use(bodyParser());
+app.use(cors());
 
+app.listen(3000);
 
 var UrlSchema = {"OriginalUrl": String, "MinifiedUrl": String, "CreatedBy": String, "CreatedOn": Date};
 var Url = mongoose.model('Url', UrlSchema);
@@ -25,12 +25,26 @@ var testUrl = new Url({
 
 app.post('/addUrl', function (req, res) {
   console.log(req.body);
+  var urlObject = new Url(req.body);
+  urlObject.save(function (err) {
+    if (err) {
+      res.send(err);
+    } else {
+      getAllMinifiedUrls(req, res);
+    }
+  });
 });
 
 app.get("/", function (req, res) {
   Url.find(function (err, urls) {
+    console.log(urls);
     res.send(urls);
   });
 });
 
-app.listen(3000);
+function getAllMinifiedUrls(req, res) {
+  Url.find(function (err, urls) {
+    console.log(urls);
+    res.send(urls);
+  });
+}

@@ -15,17 +15,18 @@
     }
 
     function getAllMinifiedUrls(response) {
-      vm.allMinifiedUrls = response;
+      return vm.allMinifiedUrls = response;
     }
 
     function errorWhileRetrieving(error) {
-      console.log(error);
+      return console.log(error);
     }
 
     function createMinifier() {
       $http.post('http://localhost:3000/addUrl', vm.data).then(
           function(response){
             console.log(response);
+            vm.allMinifiedUrls = response.data;
           }, function(err) {
             console.log(err);
           }
