@@ -1,0 +1,17 @@
+{
+  "name": "url_minifier",
+  "version": "1.0.0",
+  "description": "MInifies URL ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "MMehta",
+  "license": "ISC",
+  "devDependencies": {
+    "body-parser": "^1.13.2",
+    "cors": "^2.7.1",
+    "express": "^4.13.1",
+    "mongoose": "^4.1.0"
+  }
+}
