@@ -48,3 +48,13 @@ function getAllMinifiedUrls(req, res) {
     res.send(urls);
   });
 }
+
+app.get("/SqrTd/:key", function (req, res) {
+  Url.findOne({MinifiedUrl : req.params.key}, function (err, url) {
+    if (err != null) {
+      res.send("Url not found");
+    } else {
+      res.redirect("https://" + url.OriginalUrl);
+    }
+  });
+});
