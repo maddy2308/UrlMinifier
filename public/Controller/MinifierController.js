@@ -9,28 +9,39 @@
 
     vm.getMinifier = getMinifier;
     vm.createMinifier = createMinifier;
+    vm.removeMinifier = removeMinifier;
+    vm.CreatedOn = new Date();
+
+    activate();
+
+    function activate() {
+      getMinifier();
+      clearFormFields();
+    }
 
     function getMinifier() {
-      return MinifierService.getAllMinifiedUrl().then(getAllMinifiedUrls, errorWhileRetrieving);
-    }
-
-    function getAllMinifiedUrls(response) {
-      return vm.allMinifiedUrls = response;
-    }
-
-    function errorWhileRetrieving(error) {
-      return console.log(error);
+      return MinifierService.getAllMinifiedUrl().then(allMinifiedUrls, errorWhileRetrieving);
     }
 
     function createMinifier() {
-      $http.post('http://localhost:3000/addUrl', vm.data).then(
-          function(response){
-            console.log(response);
-            vm.allMinifiedUrls = response.data;
-          }, function(err) {
-            console.log(err);
-          }
-      );
-      }
+      return MinifierService.insertMinifiedUrl(vm.data).then(allMinifiedUrls, errorWhileRetrieving);
+    }
+
+    function removeMinifier(url) {
+      return MinifierService.removedMinifiedUrl(url).then(allMinifiedUrls, errorWhileRetrieving);
+    }
+
+    function allMinifiedUrls(response) {
+      vm.allMinifiedUrls = response;
+      clearFormFields();
+    }
+
+    function errorWhileRetrieving(error) {
+      console.log(error);
+    }
+
+    function clearFormFields() {
+      vm.data = {};
+    }
   }
 })();

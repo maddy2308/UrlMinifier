@@ -12,12 +12,6 @@
     return service;
 
     function getAllMinifiedUrls () {
-      //return [{
-      //  OriginalUrl: 'www.google.com',
-      //  MinifiedUrl: 'gogl',
-      //  CreatedBy: "Madhur Mehta",
-      //  CreatedOn: new Date()
-      //}];
       return $http.get("http://localhost:3000").then(
           function(response){
             return response.data;
@@ -28,12 +22,20 @@
       );
     }
 
-    function insertMinifiedUrl () {
-
+    function insertMinifiedUrl (formData) {
+      return $http.post('http://localhost:3000/addUrl', formData).then(
+          function(response){
+            console.log(response);
+            return response.data;
+          }, function(err) {
+            console.log(err);
+            return err;
+          }
+      );
     }
 
-    function removeMinifiedUrl() {
-
+    function removeMinifiedUrl(url) {
+      console.log(url);
     }
   }
 

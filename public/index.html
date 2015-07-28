@@ -5,23 +5,59 @@
     <title></title>
 </head>
 <body ng-app="MinifierApp" ng-controller="MinifierController as minCtrl">
-    <button ng-click="minCtrl.getMinifier()">Get</button>
-    <label>Original Url</label>
-    <input type="text" ng-model="minCtrl.data.OriginalUrl">
-    <br>
-    <label>Minified Url</label>
-    <input type="text" ng-model="minCtrl.data.MinifiedUrl">
 
-    <button ng-click="minCtrl.createMinifier()">Add</button>
+<div class="container-fluid">
 
-    <ul>
-        <li ng-repeat="url in minCtrl.allMinifiedUrls">
-            {{url.OriginalUrl}} --> {{url.MinifiedUrl}}
-        </li>
-    </ul>
+    <form class="form-horizontal well">
+        <div class="form-group">
+            <label>Original Url</label>
+            <input type="text" class="form-control" id="originalUrl" placeholder="Original Url"
+                   ng-model="minCtrl.data.OriginalUrl">
+        </div>
+        <div class="form-group">
+            <label>Minified Url</label>
+            <input type="text" class="form-control" id="minifiedUrl" placeholder="Minified Url Phrase"
+                   ng-model="minCtrl.data.MinifiedUrl">
+        </div>
+
+        <div class="form-group">
+            <label>Created By</label>
+            <input type="text" class="form-control" id="createdBy" placeholder="username"
+                   ng-model="minCtrl.data.CreatedBy">
+        </div>
+
+        <div class="form-group">
+            <label>Created On</label>
+            <input type="date" id="createdOn" ng-model="minCtrl.data.CreatedOn"
+                   value="{{ minCtrl.CreatedOn | date: 'MM-dd-yyyy' }}"/>
+        </div>
+
+        <button class="btn btn-primary" ng-click="minCtrl.createMinifier()">Add</button>
+    </form>
+</div>
+
+<table class="table table-bordered table-condensed table-hover">
+    <tr>
+        <th>Original Url</th>
+        <th>Minified Url</th>
+        <th>Created By</th>
+        <th>Created On</th>
+        <th>Delete</th>
+    </tr>
+    <tr ng-repeat="url in minCtrl.allMinifiedUrls">
+        <td>{{url.OriginalUrl}}</td>
+        <td>{{url.MinifiedUrl}}</td>
+        <td>{{url.CreatedBy}}</td>
+        <td>{{url.CreatedOn | date: 'MM-dd-yyyy'}}</td>
+        <td><button class="btn btn-danger" ng-click="minCtrl.removeMinifier(url)">X</button></td>
+    </tr>
+</table>
+
 </body>
 <script src="bower_components/angular/angular.js"></script>
 <script src="app.js"></script>
 <script src="Controller/MinifierController.js"></script>
 <script src="Services/MinifierService.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 </html>
