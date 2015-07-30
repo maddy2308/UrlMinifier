@@ -29,7 +29,7 @@
         <div class="form-group">
             <label>Created On</label>
             <input type="date" id="createdOn" ng-model="minCtrl.data.CreatedOn"
-                   value="{{ minCtrl.CreatedOn | date: 'MM-dd-yyyy' }}"/>
+                   value="{{ minCtrl.CreatedOn | date: 'MM-dd-YYYY' }}"/>
         </div>
 
         <button class="btn btn-primary" ng-click="minCtrl.createMinifier()">Add</button>

@@ -58,3 +58,15 @@ app.get("/SqrTd/:key", function (req, res) {
     }
   });
 });
+
+app.delete("/removeUrl/:id", function(req, res){
+  console.log(req.params.id);
+  Url.findByIdAndRemove(req.params.id, function(err, successResponse) {
+    if(err) {
+      res.send("Unable to delete the Document. Try again later!!1");
+    } else{
+      console.log(successResponse);
+      getAllMinifiedUrls(req, res);
+    }
+  })
+});

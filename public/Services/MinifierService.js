@@ -9,10 +9,12 @@
       insertMinifiedUrl : insertMinifiedUrl,
       removedMinifiedUrl : removeMinifiedUrl
     };
+    var baseUrl = "http://localhost:3000";
+
     return service;
 
     function getAllMinifiedUrls () {
-      return $http.get("http://localhost:3000").then(
+      return $http.get(baseUrl).then(
           function(response){
             return response.data;
           },
@@ -23,7 +25,7 @@
     }
 
     function insertMinifiedUrl (formData) {
-      return $http.post('http://localhost:3000/addUrl', formData).then(
+      return $http.post(baseUrl + '/addUrl', formData).then(
           function(response){
             console.log(response);
             return response.data;
@@ -36,6 +38,14 @@
 
     function removeMinifiedUrl(url) {
       console.log(url);
+      var id = url._id;
+      return $http.delete(baseUrl + "/removeUrl/" + id).success(function(response){
+        console.log(response);
+        return response;
+      }).error(function(err) {
+        console.log(err);
+        return err;
+      });
     }
   }
 
