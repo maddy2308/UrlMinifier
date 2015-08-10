@@ -25,25 +25,25 @@
     }
 
     function insertMinifiedUrl (formData) {
+      formData.CreatedOn = new Date();
       return $http.post(baseUrl + '/addUrl', formData).then(
           function(response){
-            console.log(response);
+            if(response.data == "ERR:1001"){
+              swal("Oops...", "Someone has already used that URL. Try another", "error");
+              return getAllMinifiedUrls();
+            }
             return response.data;
           }, function(err) {
-            console.log(err);
             return err;
           }
       );
     }
 
     function removeMinifiedUrl(url) {
-      console.log(url);
       var id = url._id;
       return $http.delete(baseUrl + "/removeUrl/" + id).success(function(response){
-        console.log(response);
         return response;
       }).error(function(err) {
-        console.log(err);
         return err;
       });
     }

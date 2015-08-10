@@ -15,39 +15,30 @@ app.listen(3000);
 var UrlSchema = {"OriginalUrl": String, "MinifiedUrl": String, "CreatedBy": String, "CreatedOn": Date};
 var Url = mongoose.model('Url', UrlSchema);
 
-var testUrl = new Url({
-  OriginalUrl: 'www.google.com',
-  MinifiedUrl: 'gogl',
-  CreatedBy: "Madhur Mehta",
-  CreatedOn: new Date()
-});
+var MinifiedKeywordSchema = {"MinifiedKeyword" : String}
+var MinifiedKeyword = mongoose.model('MinifiedKeyword', MinifiedKeywordSchema);
 
 
 app.post('/addUrl', function (req, res) {
-  console.log(req.body);
   var urlObject = new Url(req.body);
-  urlObject.save(function (err) {
-    if (err) {
-      res.send(err);
-    } else {
-      getAllMinifiedUrls(req, res);
-    }
-  });
+  if (isKeywordAvailable(req.body.MinifiedUrl)) {
+    urlObject.save(function (err) {
+      if (err) {
+        res.send(err);
+      } else {
+        getAllMinifiedUrls(res);
+      }
+    });
+  } else {
+    res.send("ERR:1001")
+  }
 });
 
 app.get("/", function (req, res) {
   Url.find(function (err, urls) {
-    console.log(urls);
     res.send(urls);
   });
 });
-
-function getAllMinifiedUrls(req, res) {
-  Url.find(function (err, urls) {
-    console.log(urls);
-    res.send(urls);
-  });
-}
 
 app.get("/SqrTd/:key", function (req, res) {
   Url.findOne({MinifiedUrl : req.params.key}, function (err, url) {
@@ -60,13 +51,45 @@ app.get("/SqrTd/:key", function (req, res) {
 });
 
 app.delete("/removeUrl/:id", function(req, res){
-  console.log(req.params.id);
   Url.findByIdAndRemove(req.params.id, function(err, successResponse) {
     if(err) {
-      res.send("Unable to delete the Document. Try again later!!1");
+      res.send("Unable to delete the Document. Try again later!!!");
     } else{
-      console.log(successResponse);
-      getAllMinifiedUrls(req, res);
+      getAllMinifiedUrls(res);
     }
   })
 });
+
+function getAllMinifiedUrls(res) {
+  Url.find(function (err, urls) {
+    res.send(urls);
+  });
+}
+
+function isKeywordAvailable(minifiedKeyword) {
+  MinifiedKeyword.find({"MinifiedKeyword" : minifiedKeyword}, function(err, response) {
+    if(err){
+      return "Server response failed. Try Again!"
+    } else{
+      if(response.length > 0){
+        return false;
+      } else {
+        console.log("can be inserted");
+        insertNewMinifiedKeyword(minifiedKeyword);
+        return true;
+      }
+    }
+  })
+}
+
+function insertNewMinifiedKeyword(newMinifiedKeyword) {
+  var newMinifiedKeyword = new MinifiedKeyword({"MinifiedKeyword" : newMinifiedKeyword});
+  newMinifiedKeyword.save(function (err) {
+    if (err) {
+      res.send(err);
+    } else {
+        console.log("saved");
+    }
+  });
+}
+

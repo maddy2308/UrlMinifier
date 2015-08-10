@@ -10,7 +10,6 @@
     vm.getMinifier = getMinifier;
     vm.createMinifier = createMinifier;
     vm.removeMinifier = removeMinifier;
-    vm.CreatedOn = new Date();
 
     activate();
 
@@ -20,15 +19,18 @@
     }
 
     function getMinifier() {
-      return MinifierService.getAllMinifiedUrl().then(allMinifiedUrls, errorWhileRetrieving);
+      MinifierService.getAllMinifiedUrl().then(allMinifiedUrls, errorWhileRetrieving);
     }
 
     function createMinifier() {
-      return MinifierService.insertMinifiedUrl(vm.data).then(allMinifiedUrls, errorWhileRetrieving);
+      MinifierService.insertMinifiedUrl(vm.data).then(allMinifiedUrls, errorWhileRetrieving);
     }
 
     function removeMinifier(url) {
-      return MinifierService.removedMinifiedUrl(url).then(allMinifiedUrls, errorWhileRetrieving);
+      MinifierService.removedMinifiedUrl(url).then(function(response) {
+        vm.allMinifiedUrls = response.data;
+        clearFormFields();
+      }, errorWhileRetrieving);
     }
 
     function allMinifiedUrls(response) {
